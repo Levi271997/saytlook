@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-200 antialiased;
+  }
+}
+
+@layer components {
+  /* Pulse used when a finding is clicked in the ErrorPanel. */
+  .finding-flash {
+    animation: finding-flash 1.2s ease-out 3;
+  }
+}
+
+@keyframes finding-flash {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Keep the stage scrollbars visible but unobtrusive against the dark chrome. */
+.stage-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.stage-scroll::-webkit-scrollbar-thumb {
+  @apply rounded bg-slate-700;
+}
+.stage-scroll::-webkit-scrollbar-track {
+  @apply bg-slate-900;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "digitalfeet-qa",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Internal web QA & design-compare tool for the Digitalfeet web team",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./apps/*\" dev",
+    "dev:api": "pnpm --filter @digitalfeet/api dev",
+    "dev:web": "pnpm --filter @digitalfeet/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm --filter @digitalfeet/analyzer test",
+    "typecheck": "pnpm -r typecheck",
+    "postinstall": "pnpm --filter @digitalfeet/analyzer build"
+  }
+}

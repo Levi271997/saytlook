@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digitalfeet QA - deliberately broken test page</title>
+    <style>
+      :root { --gap: 24px; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, Helvetica, Arial, sans-serif;
+        color: #111827;
+        background: #fff;
+      }
+      main { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+      section { margin-bottom: var(--gap); padding: 24px; border: 1px solid #e5e7eb; border-radius: 8px; }
+      /* Deliberately off the 8px grid, to exercise the rhythm check. */
+      .off-grid { margin-bottom: 23px; }
+      h1 { font-size: 40px; line-height: 48px; margin: 0 0 16px; }
+      h2 { font-size: 28px; line-height: 34px; margin: 0 0 12px; }
+      h4 { font-size: 20px; line-height: 24px; margin: 0 0 12px; }
+      p { font-size: 16px; line-height: 26px; margin: 0 0 12px; }
+      /* Three problems in one rule: a fourth font family, sub-12px text, tight leading. */
+      .legal { font-family: "Comic Sans MS", cursive; font-size: 10px; line-height: 11px; }
+      .serif { font-family: Georgia, serif; }
+      .mono { font-family: "Courier New", monospace; }
+      .cards { display: flex; gap: 32px; }
+      .card { flex: 1; padding: 16px; border: 1px solid #e5e7eb; border-radius: 6px; }
+      img { max-width: 100%; height: auto; display: block; }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/work">Work</a>
+      <!-- Nav boilerplate: long enough to duplicate, but must be ignored. -->
+      <p>We build fast, accessible websites for ambitious brands everywhere.</p>
+    </nav>
+
+    <main>
+      <h1>Digitalfeet QA test page</h1>
+
+      <!-- Skipped level: H2 is followed by H4. -->
+      <section>
+        <h2>Typography problems</h2>
+        <p class="serif">This paragraph uses a second font family, Georgia.</p>
+        <p class="mono">This one uses a third, Courier New.</p>
+        <p class="legal">
+          This legal copy is 10px with an 11px line-height in a fourth font family.
+        </p>
+      </section>
+
+      <section class="off-grid">
+        <h4>Skipped heading level (H2 straight to H4)</h4>
+        <p>The heading above should raise a "skipped heading level" warning.</p>
+      </section>
+
+      <section>
+        <h2>Image problems</h2>
+        <!-- Broken: this path does not exist, so the HEAD check returns 404. -->
+        <img src="./does-not-exist.png" alt="A broken image" width="320" height="200" />
+        <!-- Missing alt attribute entirely. -->
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMjAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzM4YmRmOCIvPjwvc3ZnPg=="
+          width="320"
+          height="200"
+        />
+        <!-- Empty alt on a large image: flagged as a warning to confirm. -->
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0ODAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iNDgwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2ZiYmYyNCIvPjwvc3ZnPg=="
+          alt=""
+          width="480"
+          height="300"
+        />
+      </section>
+
+      <section>
+        <h2>Duplicated paragraph</h2>
+        <p>
+          Our team pairs strategy, design and engineering so every release ships faster than the last one.
+        </p>
+      </section>
+
+      <section>
+        <h2>Duplicated paragraph again</h2>
+        <p>
+          Our team pairs strategy, design and engineering so every release ships faster than the last one.
+        </p>
+      </section>
+
+      <section>
+        <h2>Duplicated sections</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Strategy</h3>
+            <p>We start by mapping the problem, the audience and the commercial goal behind the brief.</p>
+            <p>Then we agree the measures of success before a single screen gets designed.</p>
+            <p>That keeps the whole team pointed at the same outcome from day one onwards.</p>
+          </article>
+          <article class="card">
+            <h3>Strategy</h3>
+            <p>We start by mapping the problem, the audience and the commercial goal behind the brief.</p>
+            <p>Then we agree the measures of success before a single screen gets designed.</p>
+            <p>That keeps the whole team pointed at the same outcome from day one onwards.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <!-- Footer boilerplate: duplicated on purpose, and must be ignored. -->
+      <p>We build fast, accessible websites for ambitious brands everywhere.</p>
+      <p>Copyright 2026 Digitalfeet. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+.env
+.env.local
+apps/api/.data/
+apps/web/dist/
+coverage/
+
+# build info
+*.tsbuildinfo
+apps/web/tsconfig.tsbuildinfo
