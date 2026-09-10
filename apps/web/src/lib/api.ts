@@ -17,6 +17,18 @@ export interface Viewport {
  */
 const API_BASE = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE_URL ?? '');
 
+/**
+ * Whether this build has an analysis backend behind it.
+ *
+ * Dev gets one from the Vite proxy; a production build only has one if
+ * VITE_API_BASE_URL was set when it was built. The static GitHub Pages
+ * deployment has neither, so the UI checks this to say so up front rather
+ * than letting every action fail on a fetch to nowhere.
+ */
+export function isApiConfigured(): boolean {
+  return import.meta.env.DEV || API_BASE.length > 0;
+}
+
 async function post<T>(path: string, body: unknown): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {
     method: 'POST',

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BackendNotice } from './components/BackendNotice.js';
 import { DesignPanel } from './components/DesignPanel.js';
 import { ErrorPanel } from './components/ErrorPanel.js';
 import { HeadingPanel } from './components/HeadingPanel.js';
@@ -23,6 +24,7 @@ export function App() {
 
   return (
     <div className="flex h-full flex-col">
+      <BackendNotice />
       <UrlBar />
       <Toolbar />
 

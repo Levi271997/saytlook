@@ -1,0 +1,71 @@
+name: Deploy web app to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you redeploy by hand from the Actions tab without a new commit.
+  workflow_dispatch:
+
+# Required by configure-pages (to create the site) and deploy-pages (OIDC).
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, and never cancel one midway - a half-applied deploy
+# would leave the live site serving a mix of two builds.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # The root postinstall builds @digitalfeet/analyzer, which apps/web imports.
+      - run: pnpm install --frozen-lockfile
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          # Creates the Pages site on the first run, so there is no manual
+          # step in repo Settings before this workflow can publish.
+          enablement: true
+
+      - name: Build web app
+        run: pnpm --filter @digitalfeet/web build
+        env:
+          # Resolves to /<repo>/ for a project site, or / behind a custom
+          # domain, so the asset prefix always matches where Pages serves from.
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+
+      # Pages returns its own 404 for unknown paths. Serving the app's own
+      # index.html instead keeps deep links working if routing is added later.
+      - name: Add SPA fallback
+        run: cp apps/web/dist/index.html apps/web/dist/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

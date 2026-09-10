@@ -1,3 +1,4 @@
+import { isApiConfigured } from '../lib/api.js';
 import { useStore } from '../store.js';
 
 /** Viewport presets - the responsive check from §6, riding on the same render. */
@@ -17,6 +18,7 @@ export function UrlBar() {
   const snapshot = useStore((state) => state.snapshot);
   const history = useStore((state) => state.history);
   const restore = useStore((state) => state.restore);
+  const apiReady = isApiConfigured();
 
   return (
     <header className="border-b border-slate-800 bg-slate-950 px-4 py-3">
@@ -58,7 +60,8 @@ export function UrlBar() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !apiReady}
+          title={apiReady ? undefined : 'This build has no analysis backend configured.'}
           className="rounded bg-sky-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-slate-700"
         >
           {loading ? 'Rendering...' : 'Render'}
