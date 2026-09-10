@@ -27,7 +27,7 @@ export function UrlBar() {
           void render();
         }}
       >
-        <span className="mr-1 text-sm font-semibold text-slate-300">Digitalfeet QA</span>
+        <span className="mr-1 text-sm font-semibold text-slate-300">Saytlook QA</span>
 
         <input
           type="text"
