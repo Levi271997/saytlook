@@ -50,6 +50,10 @@ jobs:
           # Resolves to /<repo>/ for a project site, or / behind a custom
           # domain, so the asset prefix always matches where Pages serves from.
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # Set the repo variable VITE_API_BASE_URL (Settings > Secrets and
+          # variables > Actions > Variables) to a hosted API's public URL. Left
+          # unset, the build stays a preview with no Render backend.
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
       # Pages returns its own 404 for unknown paths. Serving the app's own
       # index.html instead keeps deep links working if routing is added later.
